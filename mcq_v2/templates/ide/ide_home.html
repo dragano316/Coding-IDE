@@ -20,14 +20,24 @@
     <style type="text/css" media="screen">
     #editor { 
         position: absolute;
-        width: 80%;
+        width: 95%;
         height: 400px;
         margin: 20px;
         background-color: black;
         color: white;
-        padding: 10
+        padding: 10;
+        font-size: 15px;
     }
 </style>
+
+    <script type="text/javascript">
+        function setcode(){
+            var a=document.getElementById('editor').value;
+            var editor = ace.edit("editor");
+            var b=editor.getValue();
+            document.getElementById('code').value=b;
+        }
+    </script>
 </head>
 
 <body class="fixed-sn animated fadeIn">
@@ -58,6 +68,41 @@
                 </li>
             </ul>
     </header>
+
+<!-- 
+
+    <div class="container-fluid" style="background-color: rgba(0,0,0,0.3); color: white; font-size: 15px; padding:20px;">
+        <div class="row">
+            <h1 style="color: white;">Enormous Input Test</h1>
+        </div>
+        <div class="row">
+            <p>The purpose of this problem is to verify whether the method you are using to read input data is sufficiently fast to handle problems branded with the enormous <b>Input/Output warning</b>. You are expected to be able to process at least 2.5MB of input data per second at runtime.</p>
+        </div>
+        <div class="row">
+            <h2>Input</h2>
+        </div>
+        <div class="row">
+            <p>The input begins with positive integer n(n<=107). The next n lines of input contain two positive integers ti and pi, not greater than 109, each</p>
+        </div>
+        <div class="row">
+            <h2><b>Output</b></h2><br>            
+        </div>
+        <div class="row">
+            <p>Write a single integer to output, denoting sum of ti and pi.</p>            
+        </div>
+        <div class="row">
+            <h2><b>Example</b></h2>            
+        </div>
+        <div class="row">
+            <p>7<br>1 5<br>51 55<br>96 104<br>7 3<br>9 3<br>9 15<br>11 9</p>            
+        </div>
+        <div class="row">
+            <h4><b>Output</b></h4>
+        </div>
+        <div class="row">
+            <p>6<br>106<br>200<br>10<br>12<br>24<br>20</p>
+        </div>
+    </div> -->
     
 
 
@@ -65,21 +110,39 @@
     <div class="container-fluid">
         <div class="row">
             <!-- <textarea class="txtarea"></textarea> -->
-            <div id="editor">
-                function foo(items) {
-                    var x = "All this is syntax highlighted";
-                    return x;
-                }
-            </div>
+            <div id="editor">{{source_code}}</div>
+
+
         </div>
     </div>
+    <br><br>
+
+
+
+    <button type="button" onclick="setcode()" style="visibility: hidden;">Copy Code </button>
+    <br>
+
+
+<form method="POST">{% csrf_token %}
+    <textarea type="text" value="" id="code" style="margin: 20px; height: 200px; margin-top:50px; width: 80%; background-color: black; color: white; visibility: hidden; " name="code_1"></textarea>
+    <input type="submit" onclick="setcode()" style="margin-top: 400px; background-color: green; color: white; border-radius: 10px; border: 1px solid black; width: 200px; height: 30px; cursor: pointer;" value="Test your Code">
+</form>
 
 
 
 
+{% if bool %}
+    <div class="container-fluid">
+        <div class="row">
+            45
+        </div>
+    </div>
+{% endif %}
 
 
-    <footer class="page-footer elegant-color center-on-small-only" style="margin-top: 600px;">
+
+
+    <footer class="page-footer elegant-color center-on-small-only" style="margin-top: 200px;">
         <div class="footer-copyright">
             <div class="container-fluid">
                 © 2018 Copyright:
@@ -91,8 +154,12 @@
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/javascript");
+        editor.session.setMode("ace/mode/c_cpp");
+        editor.session.setTabSize(4);
+        var code = editor.getValue();
+
     </script>
+
     <script type="text/javascript" src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/popper.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
