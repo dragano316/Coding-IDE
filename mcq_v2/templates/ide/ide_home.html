@@ -37,6 +37,7 @@
             var b=editor.getValue();
             document.getElementById('code').value=b;
         }
+        
     </script>
 </head>
 
@@ -105,8 +106,27 @@
     </div> -->
     
 
+<form method="POST">{% csrf_token %}
 
-
+    <select name="language" id="lang" onchange="lan()">
+        <option value="4">C (gcc 7.2.0)</option>
+        <option value="10">C++ (g++ 7.2.0)</option>
+        <option value="16">C#</option>
+        <option value="18">Clojure</option>
+        <option value="19">Crystal</option>
+        <option value="20">Elixir</option>
+        <option value="21">Erlang</option>
+        <option value="22">Go</option>
+        <option value="23">Haskell</option>
+        <option value="25">Insect</option>
+        <option value="26">Java 9</option>
+        <option value="27">Java 8</option>
+        <option value="29">Javascript</option>
+        <option value="33">Pascal</option>
+        <option value="34">Python 3.6</option>
+        <option value="36">Python 2.7</option>
+        <option value="38">Ruby 2.4</option>
+    </select>
     <div class="container-fluid">
         <div class="row">
             <!-- <textarea class="txtarea"></textarea> -->
@@ -123,18 +143,31 @@
     <br>
 
 
-<form method="POST">{% csrf_token %}
+    
     <textarea type="text" value="" id="code" style="margin: 20px; height: 200px; margin-top:50px; width: 80%; background-color: black; color: white; visibility: hidden; " name="code_1"></textarea>
-    <input type="submit" onclick="setcode()" style="margin-top: 400px; background-color: green; color: white; border-radius: 10px; border: 1px solid black; width: 200px; height: 30px; cursor: pointer;" value="Test your Code">
+
+    <input type="submit" onclick="setcode()" style="margin-top: 400px; background-color: green; color: white; border-radius: 10px; border: 1px solid black; width: 200px; height: 30px; cursor: pointer;" value="Test your Code"><br><br><br>
+    <textarea type="text" value="" name="input" style="background-color: white;padding-left: 15px;"></textarea>
 </form>
 
-
+<br><br><br>
 
 
 {% if bool %}
-    <div class="container-fluid">
+    <div class="container" style="background-color: white">
         <div class="row">
-            45
+            <h1 style="color: black;padding-left: 45%;">Output</h1><br>
+            <div class="col-6 ml-3">
+                <h2>Stdout : {{stdout|linebreaks}}</h2>
+                <h2>Time : {{time}}</h2>
+                <h2>Memory : {{memory}}</h2>
+                <h2>Stderr : {{stderr}}</h2>
+            </div>
+            <div class="col-6 ml-3">
+                <h3>Compile Output : {{compile_output}}</h3>
+                <h3>Message : {{message}}</h3>
+                <h3>Status : {{status}}</h3>
+            </div>
         </div>
     </div>
 {% endif %}
@@ -158,6 +191,110 @@
         editor.session.setTabSize(4);
         var code = editor.getValue();
 
+    </script>
+    <script type="text/javascript">
+        function lan(){
+            var a=document.getElementById('lang').value;
+            var editor = ace.edit("editor");
+            var cpp="""#include <stdio.h>\nint main(){\n\tprintf('Hello World!');\n}""";
+            var csharp="""// A Hello World! program in C#.\nusing System;\nnamespace HelloWorld\n{\n\tclass Hello\n{\n\t\tstatic void Main()\n{\n\t\tConsole.WriteLine("Hello World!");\n\t\tConsole.WriteLine("Press any key to exit.");\n\tConsole.ReadKey();\n\t}\n\t}\n}""";
+            var clojure="""user=> (prn 'Hello World')""";
+            var crystal="""puts 'Hello World'""";
+            var elixir="""IO.puts 'Hello, World!'""";
+            var erlang="""io:fwrite('Hello, world!').""";
+            var go="""package main\nimport "fmt"\nfunc main() {\n\tfmt.Println("hello world")\n}""";
+            var haskell="""putStrLn "Hello, world!"""";
+            var insect="""""";
+            var java="""public class Hello {\n\tpublic static void main(String []args) {\n\t\tSystem.out.println("Hello World");\n\t}\n}""";
+            var javascript="""""";
+            var pascal="""document.writeln("Hello, World");""";
+            var ruby="""""";
+            if (a=="34" || a=="36"){
+                editor.setValue("print('Hello World !!')");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/python");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="10"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/c_cpp");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="16"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/csharp");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="18"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/clojure");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="19"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/crystal");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="20"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/elixir");
+                editor.session.setTabSize(4);
+            }
+
+            else if (a=="21"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/erlang");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="22"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/go");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="23"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/haskell");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="25"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/insect");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="26" || a=="27"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/java");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="29"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/javascript");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="33"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/pascal");
+                editor.session.setTabSize(4);
+            }
+            else if (a=="38"){
+                editor.setValue("#include <stdio.h>");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/ruby");
+                editor.session.setTabSize(4);
+            }
+        }
     </script>
 
     <script type="text/javascript" src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>

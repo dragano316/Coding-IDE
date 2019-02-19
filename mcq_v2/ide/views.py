@@ -11,13 +11,18 @@ COMPILE_URL="https://api.judge0.com/submissions/?base64_encoded=false&wait=true"
 def ide(request):
 	context={
 		"bool":False,
-		"source_code":"""#include &lt;stdio.h&gt;
-void main(){
-    /*your code goes here*/
+		"source_code":"""#include <stdio.h>
+
+int main(void) {
+  char name[10];
+  scanf("%s", name);
+  printf("hello, %s", name);
+  return 0;
 }""",
 	}
 	if request.POST:
 		code=request.POST.get('code_1')
+		input1=request.POST.get('input')
 		language_id=4
 		rundata={
 			'source_code':code,
@@ -32,16 +37,14 @@ void main(){
 			'enable_per_process_and_thread_time_limit':False,
 			'enable_per_process_and_thread_memory_limit':True,
 			'max_file_size':1024,
-			'stdin':None,
+			'stdin':input1,
 			'expected_output':"hello, \n",
 			"token": "899ae152-2dc8-41a9-b6e5-69db3f1ab24a"
 		}
 		# COMPILE_URL=
 		r = requests.post(COMPILE_URL, data=rundata)
 		print(r.json())
-		{'stdout': 'hello, \n', 'time': '0.001', 'memory': 128, 'stderr': None, 
-		'token': '2e56b33a-1894-422f-80b9-1f867503b389', 'compile_output': None, 'message': None, 
-		'status': {'id': 3, 'description': 'Accepted'}}
+		r=r.json()
 
 		context={
 			"bool":True,
