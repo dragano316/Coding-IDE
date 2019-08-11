@@ -15,18 +15,30 @@
     <link href="{% static 'assets/css/animate.css' %}" rel="stylesheet">
     <link href="{% static 'assets/css/Homepage.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/ide_home.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
-
     <style type="text/css" media="screen">
     #editor { 
-        position: absolute;
-        width: 95%;
+        /*position: absolute;*/
+        width: 90%;
         height: 400px;
-        margin: 20px;
+        margin: 0px auto;
         background-color: black;
         color: white;
-        padding: 10;
+        /*padding: 10px;*/
         font-size: 15px;
+    }
+    .container1{
+        width: 95%;
+        margin: 0 auto;
+        /*padding: 0px;*/
+    }
+    .ide-header,.ide-footer{
+        width: 90%;
+        background-color: #ccc;
+        color: white;
+        margin:0 auto;
+        padding:10px;
     }
 </style>
 
@@ -37,8 +49,32 @@
             var b=editor.getValue();
             document.getElementById('code').value=b;
         }
-        
     </script>
+    <script type="text/javascript">
+        function open_textarea () {
+            var open_area=document.getElementById('code');
+                if(open_area.style.display == 'block'){
+                    open_area.style.display = 'none';
+            }
+            else{
+                open_area.style.display = 'block';
+            }      
+        }
+    </script>
+<!--     <script type="text/javascript">
+        function size(){
+            console.log('hello');
+            var changesize=document.getElementById("changesize");
+        // changesize.style.height = '100%';
+        // changesize.style.width = '100%';
+        // changesize.style.margin = '0px';
+        // changesize.style.position = 'absolute';
+        // changesize.style.top = '0';
+        // changesize.style.left = '0';
+        // changesize.style.zIndex = '999';
+        changesize.classList.add("fullscreen");
+        }
+    </script> -->
 </head>
 
 <body class="fixed-sn animated fadeIn">
@@ -104,10 +140,9 @@
             <p>6<br>106<br>200<br>10<br>12<br>24<br>20</p>
         </div>
     </div> -->
-    
-
+<div class="container1" id="changesize">
 <form method="POST">{% csrf_token %}
-
+    <div class="ide-header">
     <select name="language" id="lang" onchange="lan()">
         <option value="4">C (gcc 7.2.0)</option>
         <option value="10">C++ (g++ 7.2.0)</option>
@@ -127,30 +162,25 @@
         <option value="36">Python 2.7</option>
         <option value="38">Ruby 2.4</option>
     </select>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- <textarea class="txtarea"></textarea> -->
-            <div id="editor">{{source_code}}</div>
-
-
-        </div>
+    <!-- <i class="fa fa-expand"style="cursor: pointer;color: black; float:right;" onclick="size()"></i> -->
     </div>
-    <br><br>
+    <!-- <textarea class="txtarea"></textarea> -->
+    <div id="editor">{{source_code}}</div>
+    <div class="ide-footer"style="color:black;">line:2 col:2</div>
 
+<!--     <button type="button" onclick="setcode()" style="visibility: hidden;">Copy Code </button> -->
+    <div class="ide-footer"> 
 
-
-    <button type="button" onclick="setcode()" style="visibility: hidden;">Copy Code </button>
-    <br>
-
-
-    
-    <textarea type="text" value="" id="code" style="margin: 20px; height: 200px; margin-top:50px; width: 80%; background-color: black; color: white; visibility: hidden; " name="code_1"></textarea>
-
-    <input type="submit" onclick="setcode()" style="margin-top: 400px; background-color: green; color: white; border-radius: 10px; border: 1px solid black; width: 200px; height: 30px; cursor: pointer;" value="Test your Code"><br><br><br>
-    <textarea type="text" value="" name="input" style="background-color: white;padding-left: 15px;"></textarea>
+    <input type="submit" onclick="setcode()" style="background-color: green;color: white; border-radius: 10px; border: 1px solid black; width: 200px; height: 30px; cursor: pointer;" value="Test your Code">
+    <div style="float: right;">
+    <label>Custom Input</label>
+    <input type="checkbox" name="custom_input" onclick="open_textarea()"/>
+    </div>
+    <textarea type="text" value="" id="code" style="height: 200px; margin-top:25px; width: 80%; background-color: black; color: white; display: none"name="code_1"></textarea>
+    </div>
+    <!-- <textarea type="text" value="" name="input" style="background-color: red;"></textarea> -->
 </form>
-
-<br><br><br>
+</div>
 
 
 {% if bool %}
@@ -171,10 +201,6 @@
         </div>
     </div>
 {% endif %}
-
-
-
-
     <footer class="page-footer elegant-color center-on-small-only" style="margin-top: 200px;">
         <div class="footer-copyright">
             <div class="container-fluid">
@@ -190,11 +216,11 @@
         editor.session.setMode("ace/mode/c_cpp");
         editor.session.setTabSize(4);
         var code = editor.getValue();
-
     </script>
     <script type="text/javascript">
         function lan(){
             var a=document.getElementById('lang').value;
+            // console.log(a);
             var editor = ace.edit("editor");
             var cpp="""#include <stdio.h>\nint main(){\n\tprintf('Hello World!');\n}""";
             var csharp="""// A Hello World! program in C#.\nusing System;\nnamespace HelloWorld\n{\n\tclass Hello\n{\n\t\tstatic void Main()\n{\n\t\tConsole.WriteLine("Hello World!");\n\t\tConsole.WriteLine("Press any key to exit.");\n\tConsole.ReadKey();\n\t}\n\t}\n}""";
@@ -296,7 +322,6 @@
             }
         }
     </script>
-
     <script type="text/javascript" src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/popper.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
